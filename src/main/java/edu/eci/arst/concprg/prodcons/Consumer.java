@@ -26,13 +26,15 @@ public class Consumer extends Thread{
     public void run() {
         while (true) {
             try {
-                synchronized (queue) {
-                    if (queue.isEmpty()){
+               
+                    while (queue.isEmpty()){
                         System.out.println("sin productos");
                         queue.wait();
                     }
+                 synchronized (queue) {
                     int elem=queue.poll();
                     System.out.println("Consumer consumes "+elem);
+                     queve.notify()
 
 
                 }
