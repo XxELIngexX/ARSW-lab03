@@ -6,42 +6,39 @@
 package edu.eci.arst.concprg.prodcons;
 
 import java.util.Queue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author hcadavid
  */
 public class Consumer extends Thread{
-    
+
     private Queue<Integer> queue;
-    
-    
+
+
     public Consumer(Queue<Integer> queue){
-        this.queue=queue;        
+        this.queue=queue;
     }
-    
+
     @Override
     public void run() {
         while (true) {
             try {
-               
-                    while (queue.isEmpty()){
-                        System.out.println("sin productos");
+                while (queue.isEmpty()) {
+                    synchronized (queue) {
                         queue.wait();
                     }
-                 synchronized (queue) {
-                    int elem=queue.poll();
-                    System.out.println("Consumer consumes "+elem);
-                     queve.notify()
-
-
                 }
-            }catch (Exception e){}
+                synchronized (queue) {
+                    int elem = queue.poll();
+                    System.out.println("Consumer consumes " + elem);
+                    queue.notifyAll();
+                }
+                Thread.sleep(1000);
 
-
-
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
