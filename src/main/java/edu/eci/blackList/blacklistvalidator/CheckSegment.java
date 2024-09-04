@@ -1,6 +1,6 @@
-package edu.eci.arsw.blacklistvalidator;
+package edu.eci.blackList.blacklistvalidator;
 
-import edu.eci.arsw.spamkeywordsdatasource.HostBlacklistsDataSourceFacade;
+import edu.eci.blackList.spamkeywordsdatasource.HostBlacklistsDataSourceFacade;
 
 import java.util.LinkedList;
 import java.util.List;
