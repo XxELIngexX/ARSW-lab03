@@ -88,10 +88,9 @@ public class ControlFrame extends JFrame {
         btnPauseAndCheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                /*
-				 * COMPLETAR
-                 */
-                Immortal.pause();
+                for (Immortal im : immortals){
+                    im.setExecution(false);
+                }
 
                 int sum = 0;
                 for (Immortal im : immortals) {
@@ -136,6 +135,14 @@ public class ControlFrame extends JFrame {
         JButton btnStop = new JButton("STOP");
         btnStop.setForeground(Color.RED);
         toolBar.add(btnStop);
+
+        btnStop.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                immortals.clear();
+                btnStart.setEnabled(true);
+            }
+        });
 
         scrollPane = new JScrollPane();
         contentPane.add(scrollPane, BorderLayout.CENTER);
