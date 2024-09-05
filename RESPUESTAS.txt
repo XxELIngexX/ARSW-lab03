@@ -1,0 +1,2 @@
+10
+  -  La condicion de carrera si se puede generar debido a que los hilos pueden acceder a una misma variable y pueden eliminar a otro hilo al mismo tiempo porque la lista se va modificando concurrente. 
