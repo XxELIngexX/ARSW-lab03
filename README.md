@@ -2,6 +2,7 @@
 ## Escuela Colombiana de Ingeniería
 ### Arquitecturas de Software – ARSW
 
+Integrantes : CESAR DAVID AMAYA GOMEZ y TELLEZ AVILA MIGUEL CAMILO
 
 #### Ejercicio – programación concurrente, condiciones de carrera y sincronización de hilos. EJERCICIO INDIVIDUAL O EN PAREJAS.
 
@@ -11,21 +12,26 @@ Control de hilos con wait/notify. Productor/consumidor.
 
 1. Revise el funcionamiento del programa y ejecútelo. Mientras esto ocurren, ejecute jVisualVM y revise el consumo de CPU del proceso correspondiente. A qué se debe este consumo?, cual es la clase responsable?
 	
-	-El alto consumo es debido a la clase Consumer el cual estan en un ciclo infinito de consumir, lo que causa un alto consumo de recursos de la CPU 
+	-El alto consumo es debido a la clase Consumer el cual estan en un ciclo infinito de consumir, lo que causa un alto consumo de recursos de la CPU
 
-2. Haga los ajustes necesarios para que la solución use más eficientemente la CPU, teniendo en cuenta que -por ahora- la producción es lenta y el consumo es rápido. Verifique con JVisualVM que el consumo de CPU se reduzca.
-
-![image](https://github.com/user-attachments/assets/7541b1c2-67af-40a6-91d5-7f8cb37283ed)
-
-se agrega un bloque sincronizado en el metodo run() del consumidor, para que este hagha un wait cuando la (queve) este vacia, asi no consumira tanto CPU
+	![image](https://github.com/user-attachments/assets/f90af4f9-b29f-45e2-9563-e2942bc66ae8)
 
 
-  
-4. Haga que ahora el productor produzca muy rápido, y el consumidor consuma lento. Teniendo en cuenta que el productor conoce un límite de Stock (cuantos elementos debería tener, a lo sumo en la cola), haga que dicho límite se respete. Revise el API de la colección usada como cola para ver cómo garantizar que dicho límite no se supere. Verifique que, al poner un límite pequeño para el 'stock', no haya consumo alto de CPU ni errores.
+3. Haga los ajustes necesarios para que la solución use más eficientemente la CPU, teniendo en cuenta que -por ahora- la producción es lenta y el consumo es rápido. Verifique con JVisualVM que el consumo de CPU se reduzca.
+	
+ 	-se agrega un bloque sincronizado en el metodo run() del consumidor, para que este hagha un wait cuando la (queve) este vacia, asi no consumira tanto CPU
+	
+ 	![image](https://github.com/user-attachments/assets/7541b1c2-67af-40a6-91d5-7f8cb37283ed)
 
- ![image](https://github.com/user-attachments/assets/49f2be92-7873-4fa2-bd74-249cbf89357d)
+ 	![image](https://github.com/user-attachments/assets/89ab5673-0402-437d-9ae8-ce0b5dfea17a)
+
+
+5. Haga que ahora el productor produzca muy rápido, y el consumidor consuma lento. Teniendo en cuenta que el productor conoce un límite de Stock (cuantos elementos debería tener, a lo sumo en la cola), haga que dicho límite se respete. Revise el API de la colección usada como cola para ver cómo garantizar que dicho límite no se supere. Verifique que, al poner un límite pequeño para el 'stock', no haya consumo alto de CPU ni errores.
+
+	-se agrega un bloque sincronizado en el metodo run() del productor, para que este hagha un wait cuando la (queve) este llena
+
+	 ![image](https://github.com/user-attachments/assets/49f2be92-7873-4fa2-bd74-249cbf89357d)
  
-se agrega un bloque sincronizado en el metodo run() del productor, para que este hagha un wait cuando la (queve) este llena
 
 ##### Parte II. – Antes de terminar la clase.
 
@@ -93,14 +99,14 @@ como observamos, el valor "Health Sum" no es el mismo, significa que no se cumpl
 
 
 
-10. Plantee una estrategia para corregir el problema antes identificado (puede revisar de nuevo las páginas 206 y 207 de _Java Concurrency in Practice_).
+9. Plantee una estrategia para corregir el problema antes identificado (puede revisar de nuevo las páginas 206 y 207 de _Java Concurrency in Practice_).
 
 - la estrategia fue asignarle un orden de bloqueo a los importales que pelean, en este caso se asigna por los puntos de vida que quedan
   
   ![image](https://github.com/user-attachments/assets/6a634979-c732-41cc-8bc8-9faf0c54c505)
 
 
-11. Una vez corregido el problema, rectifique que el programa siga funcionando de manera consistente cuando se ejecutan 100, 1000 o 10000 inmortales. Si en estos casos grandes se empieza a incumplir de nuevo el invariante, debe analizar lo realizado en el paso 4.
+10. Una vez corregido el problema, rectifique que el programa siga funcionando de manera consistente cuando se ejecutan 100, 1000 o 10000 inmortales. Si en estos casos grandes se empieza a incumplir de nuevo el invariante, debe analizar lo realizado en el paso 4.
     
 - implementacin de 100
 
@@ -118,11 +124,11 @@ como observamos, el valor "Health Sum" no es el mismo, significa que no se cumpl
 
 
 
-13. Un elemento molesto para la simulación es que en cierto punto de la misma hay pocos 'inmortales' vivos realizando peleas fallidas con 'inmortales' ya muertos. Es necesario ir suprimiendo los inmortales muertos de la simulación a medida que van muriendo. Para esto:
+11. Un elemento molesto para la simulación es que en cierto punto de la misma hay pocos 'inmortales' vivos realizando peleas fallidas con 'inmortales' ya muertos. Es necesario ir suprimiendo los inmortales muertos de la simulación a medida que van muriendo. Para esto:
 	* Analizando el esquema de funcionamiento de la simulación, esto podría crear una condición de carrera? Implemente la funcionalidad, ejecute la simulación y observe qué problema se presenta cuando hay muchos 'inmortales' en la misma. Escriba sus conclusiones al respecto en el archivo RESPUESTAS.txt.
 	* Corrija el problema anterior __SIN hacer uso de sincronización__, pues volver secuencial el acceso a la lista compartida de inmortales haría extremadamente lenta la simulación.
 
-14. Para finalizar, implemente la opción STOP.
+12. Para finalizar, implemente la opción STOP.
 
 <!--
 ### Criterios de evaluación
