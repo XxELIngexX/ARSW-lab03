@@ -21,6 +21,9 @@ public class Immortal extends Thread {
     private final Random r = new Random(System.currentTimeMillis());
 
     private static final Object lock = new Object();
+    
+    private boolean execution;
+    
     private static boolean paused = false;
 
 
@@ -114,6 +117,9 @@ public class Immortal extends Thread {
         return name + "[" + health + "]";
     }
 
+    public void setExecution(boolean execution) {
+        this.execution = execution;
+    }
 
 
     public static void pause() {
