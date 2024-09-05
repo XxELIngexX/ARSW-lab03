@@ -91,6 +91,8 @@ public class ControlFrame extends JFrame {
                 /*
 				 * COMPLETAR
                  */
+                Immortal.pause();
+
                 int sum = 0;
                 for (Immortal im : immortals) {
                     sum += im.getHealth();
@@ -111,6 +113,8 @@ public class ControlFrame extends JFrame {
                 /**
                  * IMPLEMENTAR
                  */
+                Immortal.resumeGame();
+
 
             }
         });
@@ -122,6 +126,10 @@ public class ControlFrame extends JFrame {
 
         numOfImmortals = new JTextField();
         numOfImmortals.setText("3");
+//        numOfImmortals.setText("100");
+//        numOfImmortals.setText("1000");
+//        numOfImmortals.setText("10000");
+
         toolBar.add(numOfImmortals);
         numOfImmortals.setColumns(10);
 
