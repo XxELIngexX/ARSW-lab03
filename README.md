@@ -14,15 +14,29 @@ Control de hilos con wait/notify. Productor/consumidor.
 	-El alto consumo es debido a la clase Consumer el cual estan en un ciclo infinito de consumir, lo que causa un alto consumo de recursos de la CPU 
 
 2. Haga los ajustes necesarios para que la solución use más eficientemente la CPU, teniendo en cuenta que -por ahora- la producción es lenta y el consumo es rápido. Verifique con JVisualVM que el consumo de CPU se reduzca.
-3. Haga que ahora el productor produzca muy rápido, y el consumidor consuma lento. Teniendo en cuenta que el productor conoce un límite de Stock (cuantos elementos debería tener, a lo sumo en la cola), haga que dicho límite se respete. Revise el API de la colección usada como cola para ver cómo garantizar que dicho límite no se supere. Verifique que, al poner un límite pequeño para el 'stock', no haya consumo alto de CPU ni errores.
 
+![image](https://github.com/user-attachments/assets/7541b1c2-67af-40a6-91d5-7f8cb37283ed)
+
+se agrega un bloque sincronizado en el metodo run() del consumidor, para que este hagha un wait cuando la (queve) este vacia, asi no consumira tanto CPU
+
+
+  
+4. Haga que ahora el productor produzca muy rápido, y el consumidor consuma lento. Teniendo en cuenta que el productor conoce un límite de Stock (cuantos elementos debería tener, a lo sumo en la cola), haga que dicho límite se respete. Revise el API de la colección usada como cola para ver cómo garantizar que dicho límite no se supere. Verifique que, al poner un límite pequeño para el 'stock', no haya consumo alto de CPU ni errores.
+
+ ![image](https://github.com/user-attachments/assets/49f2be92-7873-4fa2-bd74-249cbf89357d)
+ 
+se agrega un bloque sincronizado en el metodo run() del productor, para que este hagha un wait cuando la (queve) este llena
 
 ##### Parte II. – Antes de terminar la clase.
+
 
 Teniendo en cuenta los conceptos vistos de condición de carrera y sincronización, haga una nueva versión -más eficiente- del ejercicio anterior (el buscador de listas negras). En la versión actual, cada hilo se encarga de revisar el host en la totalidad del subconjunto de servidores que le corresponde, de manera que en conjunto se están explorando la totalidad de servidores. Teniendo esto en cuenta, haga que:
 
 - La búsqueda distribuida se detenga (deje de buscar en las listas negras restantes) y retorne la respuesta apenas, en su conjunto, los hilos hayan detectado el número de ocurrencias requerido que determina si un host es confiable o no (_BLACK_LIST_ALARM_COUNT_).
 - Lo anterior, garantizando que no se den condiciones de carrera.
+
+
+** se maneja una variable "globalOcurrences" atomica, y una verificacion de los hilos, para que esta variable compártida no excedan el limite que son 5, asi se evitaran busquedas innesesarias y los hilos fionalizaran su ejecucion en el momento en el que la globalOcurrences sea igual o mayor a 5 **
 
 ##### Parte III. – Avance para el martes, antes de clase.
 
