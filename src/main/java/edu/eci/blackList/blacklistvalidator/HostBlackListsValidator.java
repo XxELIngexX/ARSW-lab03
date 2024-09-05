@@ -3,6 +3,7 @@ package edu.eci.blackList.blacklistvalidator;
 import edu.eci.blackList.spamkeywordsdatasource.HostBlacklistsDataSourceFacade;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,22 +29,21 @@ public class HostBlackListsValidator {
      */
     public List<Integer> checkHost(String ipaddress, int numThreads) {
         List<Integer> blacklists = new LinkedList<>();
-        int occurrences = 0;
+        AtomicInteger globalOccurrences = new AtomicInteger(0);
 
-        CheckSegment[] threads = threadGenerator(numThreads, ipaddress);
+        CheckSegment[] threads = threadGenerator(numThreads, ipaddress,globalOccurrences);
 
         for (CheckSegment thread : threads) {
             try {
                 thread.join();
                 blacklists.addAll(thread.getBlacklists());
-                occurrences += thread.getOccurrences();
             } catch (InterruptedException e) {
                 LOG.log(Level.SEVERE, "Thread interrupted", e);
             }
         }
 
-        if (occurrences >= BLACK_LIST_ALARM_COUNT) {
-            LOG.log(Level.INFO, "The host was found in {0} blacklists", occurrences);
+        if (globalOccurrences.get() >= BLACK_LIST_ALARM_COUNT) {
+            LOG.log(Level.INFO, "The host was found in {0} blacklists", globalOccurrences);
         } else {
             LOG.log(Level.INFO, "The host was found in less than {0} blacklists", BLACK_LIST_ALARM_COUNT);
         }
@@ -51,7 +51,7 @@ public class HostBlackListsValidator {
         return blacklists;
     }
 
-    private CheckSegment[] threadGenerator(int numThreads, String ipaddress) {
+    private CheckSegment[] threadGenerator(int numThreads, String ipaddress, AtomicInteger ocurrences) {
         int serverCount = dataSource.getRegisteredServersCount();
         int segmentSize = serverCount / numThreads;
         CheckSegment[] threads = new CheckSegment[numThreads];
@@ -59,7 +59,7 @@ public class HostBlackListsValidator {
         for (int i = 0; i < numThreads; i++) {
             int startIndex = i * segmentSize;
             int endIndex = (i == numThreads - 1) ? serverCount : startIndex + segmentSize;
-            threads[i] = new CheckSegment(dataSource, startIndex, endIndex, ipaddress);
+            threads[i] = new CheckSegment(dataSource, startIndex, endIndex, ipaddress,ocurrences);
             threads[i].start();
         }
 
